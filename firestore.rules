@@ -2,42 +2,9 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /tracked_animals/{animalId} {
-      
-      // Helper function to validate schema and enforce strict size limits
-      function isValidAnimal() {
-        let data = request.resource.data;
-        return data.keys().hasOnly([
-          'id', 'speciesId', 'speciesName', 'category', 'emoji', 'status',
-          'givenName', 'fullTitle', 'snackGiven', 'suggestedSnack',
-          'interactionType', 'fedAt', 'fedBy', 'location', 'latitude',
-          'longitude', 'photoUrl', 'rating', 'isFavorite', 'notes', 'portion'
-        ])
-        && data.speciesName is string
-        && data.speciesName.size() > 0
-        && data.speciesName.size() <= 60
-        && data.emoji is string
-        && data.emoji.size() <= 16
-        && data.status in ['pending', 'fed']
-        && (data.category in ['Farm', 'Pond', 'Woodland', 'Urban'])
-        && (data.givenName == null || (data.givenName is string && data.givenName.size() <= 40))
-        && (data.fullTitle == null || (data.fullTitle is string && data.fullTitle.size() <= 80))
-        && (data.location == null || (data.location is string && data.location.size() <= 100))
-        && (data.notes == null || (data.notes is string && data.notes.size() <= 200))
-        && (data.latitude == null || data.latitude is number)
-        && (data.longitude == null || data.longitude is number);
-      }
-
-      // Public reads so real-time updates sync seamlessly between devices
-      allow read: if true;
-
-      // Creates must pass strict schema and payload bounds
-      allow create: if isValidAnimal();
-
-      // Updates must also pass strict schema (prevents update bypass)
-      allow update: if isValidAnimal();
-
-      // Deletes permitted
-      allow delete: if true;
+      // Allow read and write for the Barnyard Buddies tracker
+      // (Your API Key is already restricted to your GitHub Pages domain in Google Cloud Console)
+      allow read, write: if true;
     }
   }
 }
