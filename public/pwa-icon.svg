@@ -7,6 +7,6 @@
   </defs>
   <!-- Rounded Green Gradient Container matching the top-left header icon -->
   <rect width="512" height="512" rx="140" fill="url(#pawGrad)" />
-  <!-- Exact 🐾 Emoji used in the top-left header icon -->
-  <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-size="280" font-family="'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', system-ui, sans-serif">🐾</text>
+  <!-- Exact 🐾 Emoji with larger size and black fill -->
+  <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-size="340" fill="#1c1917" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', system-ui, sans-serif">🐾</text>
 </svg>
