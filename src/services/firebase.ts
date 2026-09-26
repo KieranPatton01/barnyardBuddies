@@ -12,8 +12,8 @@ import {
 } from 'firebase/firestore';
 import { TrackedAnimal } from '../types';
 
-const LOCAL_STORAGE_KEY = 'barnyard_buddies_animals';
-const COLLECTION_NAME = 'tracked_animals';
+const LOCAL_STORAGE_KEY = 'barnyard_buddies_animals_v2';
+const COLLECTION_NAME = 'barnyard_buddies';
 
 /**
  * 🔒 HARDCODED FIREBASE CONFIGURATION
@@ -40,9 +40,8 @@ function getLocalAnimals(): TrackedAnimal[] {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (raw) {
       const parsed: TrackedAnimal[] = JSON.parse(raw);
-      // Clean start: Remove any unlocked "fed" animals so user starts fresh
       if (Array.isArray(parsed)) {
-        return parsed.filter(a => a.status !== 'fed');
+        return parsed;
       }
     }
   } catch (e) {

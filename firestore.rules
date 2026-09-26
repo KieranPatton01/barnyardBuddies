@@ -1,10 +1,15 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /tracked_animals/{animalId} {
-      // Allow read and write for the Barnyard Buddies tracker
-      // (Your API Key is already restricted to your GitHub Pages domain in Google Cloud Console)
+    // Current live collection: real-time updates for you and your partner
+    match /barnyard_buddies/{animalId} {
       allow read, write: if true;
+    }
+
+    // Legacy collection: locked down so old cached app bundles can never delete or alter data
+    match /tracked_animals/{animalId} {
+      allow read: if true;
+      allow write: if false;
     }
   }
 }
