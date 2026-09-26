@@ -154,6 +154,11 @@ export const App: React.FC = () => {
         currentCount={animals.length}
         maxCap={TOTAL_ANIMAL_CAP}
       />
+
+      {/* Tiny transparent build number in bottom left corner */}
+      <div className="fixed bottom-2 left-3 z-30 pointer-events-none select-none text-[10px] font-mono text-[#351000]/25 tracking-wider">
+        v2.0.4
+      </div>
     </div>
   );
 };
