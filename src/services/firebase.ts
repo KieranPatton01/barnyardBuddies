@@ -7,16 +7,12 @@ import {
   setDoc, 
   updateDoc, 
   deleteDoc, 
-  getDocs,
-  query,
-  where,
   Firestore, 
   Unsubscribe 
 } from 'firebase/firestore';
 import { TrackedAnimal } from '../types';
 
 const LOCAL_STORAGE_KEY = 'barnyard_buddies_animals';
-const PURGE_FLAG_KEY = 'barnyard_purged_fed_fresh_start_v2';
 const COLLECTION_NAME = 'tracked_animals';
 
 /**
@@ -83,35 +79,11 @@ export function isFirestoreActive(): boolean {
   return db !== null;
 }
 
-// Function to clear all full tummies (fed status) in Firestore & local
-export async function clearAllFedAnimals(): Promise<void> {
-  if (db) {
-    try {
-      const q = query(collection(db, COLLECTION_NAME), where('status', '==', 'fed'));
-      const snapshot = await getDocs(q);
-      snapshot.forEach(async (d) => {
-        await deleteDoc(d.ref);
-      });
-    } catch (e) {
-      console.warn('Error clearing fed animals in firestore', e);
-    }
-  }
-  const local = getLocalAnimals().filter(a => a.status !== 'fed');
-  saveLocalAnimals(local);
-}
-
 // Real-time synchronization subscription
 export function subscribeToTrackedAnimals(
   onUpdate: (animals: TrackedAnimal[]) => void,
   onError?: (err: Error) => void
 ): Unsubscribe {
-  // One-time auto purge of old unlocked full tummies if requested
-  const hasPurged = localStorage.getItem(PURGE_FLAG_KEY);
-  if (!hasPurged) {
-    clearAllFedAnimals();
-    localStorage.setItem(PURGE_FLAG_KEY, 'true');
-  }
-
   // If Firestore is available, bind onSnapshot
   if (db) {
     try {
